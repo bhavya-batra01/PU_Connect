@@ -1,0 +1,99 @@
+-- =========================================================
+-- PU CONNECT - DBMS PROJECT
+-- File: 09_Combined_Queries.sql
+-- Description: Combined SQL Queries
+-- Author: Bhavya
+-- =========================================================
+
+USE pu_connect;
+
+-- =========================================================
+-- 1. Find the Top 3 Users Who Made the Most Posts
+-- =========================================================
+
+SELECT
+    u.userid,
+    u.name,
+    COUNT(p.post_id) AS total_posts
+FROM users u
+JOIN posts p
+    ON u.userid = p.user_id
+GROUP BY u.userid, u.name
+ORDER BY total_posts DESC
+LIMIT 3;
+
+-- =========================================================
+-- 2. Find Users Who Are Both Club Heads and Faculty Incharge
+-- =========================================================
+
+SELECT DISTINCT
+    u.userid,
+    u.name
+FROM users u
+JOIN clubs c
+ON (
+    u.userid = c.faculty_incharge
+    OR
+    u.userid = c.head_of_teams
+);
+
+-- =========================================================
+-- 3. Display Students Along With Their Course Results
+-- =========================================================
+
+SELECT
+    u.name,
+    c.course_name,
+    r.marks_obtained,
+    r.grade
+FROM results r
+JOIN users u
+    ON r.student_id = u.userid
+JOIN courses c
+    ON r.course_id = c.course_id
+ORDER BY u.name;
+
+-- =========================================================
+-- 4. Display Events Along With Organizing Club
+-- =========================================================
+
+SELECT
+    e.event_name,
+    e.event_date,
+    c.club_name
+FROM events e
+JOIN clubs c
+    ON e.organized_by = c.club_id;
+
+-- =========================================================
+-- 5. Display Club Name With Total Number of Posts
+-- =========================================================
+
+SELECT
+    c.club_name,
+    COUNT(cp.post_id) AS total_posts
+FROM clubs c
+LEFT JOIN club_posts cp
+    ON c.club_id = cp.club_id
+GROUP BY c.club_name
+ORDER BY total_posts DESC;
+
+-- =========================================================
+-- 6. Display Student Attendance Along With Course Name
+-- =========================================================
+
+SELECT
+    u.name,
+    c.course_name,
+    a.date,
+    a.status
+FROM attendance a
+JOIN users u
+    ON a.student_id = u.userid
+JOIN courses c
+    ON a.course_id = c.course_id
+ORDER BY a.date DESC;
+
+-- =========================================================
+-- END OF FILE
+-- =========================================================

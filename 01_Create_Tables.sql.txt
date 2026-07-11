@@ -1,0 +1,277 @@
+-- =========================================================
+-- PU CONNECT - DBMS PROJECT
+-- File: 01_Create_Tables.sql
+-- Description: Creates all database tables
+-- Author: Bhavya
+-- =========================================================
+
+DROP DATABASE IF EXISTS pu_connect;
+CREATE DATABASE pu_connect;
+USE pu_connect;
+
+-- =========================================================
+-- USERS
+-- =========================================================
+
+CREATE TABLE users (
+    userid INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    phone VARCHAR(15),
+    password VARCHAR(255) NOT NULL,
+    role ENUM('student','teacher','admin') NOT NULL,
+    joining_date DATE,
+    department VARCHAR(100),
+    year_of_study DATE
+);
+
+-- =========================================================
+-- POSTS
+-- =========================================================
+
+CREATE TABLE posts (
+    post_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    content TEXT NOT NULL,
+    post_date DATE,
+    FOREIGN KEY (user_id) REFERENCES users(userid)
+        ON DELETE CASCADE
+);
+
+-- =========================================================
+-- CLUBS
+-- =========================================================
+
+CREATE TABLE clubs (
+    club_id INT AUTO_INCREMENT PRIMARY KEY,
+    club_name VARCHAR(100) NOT NULL,
+    description TEXT,
+    faculty_incharge INT,
+    head_of_teams INT,
+    FOREIGN KEY (faculty_incharge) REFERENCES users(userid),
+    FOREIGN KEY (head_of_teams) REFERENCES users(userid)
+);
+
+-- =========================================================
+-- CLUB MEMBERS
+-- =========================================================
+
+CREATE TABLE clubs_users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    club_id INT NOT NULL,
+    role_in_club VARCHAR(50),
+    joined_at DATE,
+
+    FOREIGN KEY (user_id)
+        REFERENCES users(userid)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (club_id)
+        REFERENCES clubs(club_id)
+        ON DELETE CASCADE
+);
+
+-- =========================================================
+-- CLUB POSTS
+-- =========================================================
+
+CREATE TABLE club_posts (
+    post_id INT AUTO_INCREMENT PRIMARY KEY,
+    club_id INT NOT NULL,
+    posted_by INT NOT NULL,
+    content TEXT,
+    post_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (club_id)
+        REFERENCES clubs(club_id),
+
+    FOREIGN KEY (posted_by)
+        REFERENCES users(userid)
+);
+
+-- =========================================================
+-- COURSES
+-- =========================================================
+
+CREATE TABLE courses (
+    course_id INT AUTO_INCREMENT PRIMARY KEY,
+    course_name VARCHAR(100),
+    semester INT,
+    credits INT,
+    subject_name VARCHAR(100)
+);
+
+-- =========================================================
+-- RESULTS
+-- =========================================================
+
+CREATE TABLE results (
+    result_id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT,
+    course_id INT,
+    marks_obtained DECIMAL(5,2),
+    grade VARCHAR(5),
+    semester INT,
+
+    FOREIGN KEY (student_id)
+        REFERENCES users(userid),
+
+    FOREIGN KEY (course_id)
+        REFERENCES courses(course_id)
+);
+
+-- =========================================================
+-- EVENTS
+-- =========================================================
+
+CREATE TABLE events (
+    event_id INT AUTO_INCREMENT PRIMARY KEY,
+    event_name VARCHAR(100),
+    event_date DATE,
+    description TEXT,
+    organized_by INT,
+
+    FOREIGN KEY (organized_by)
+        REFERENCES clubs(club_id)
+);
+
+-- =========================================================
+-- EVENT PARTICIPANTS
+-- =========================================================
+
+CREATE TABLE events_participants (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    event_id INT,
+    user_id INT,
+    role VARCHAR(50),
+
+    FOREIGN KEY (event_id)
+        REFERENCES events(event_id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (user_id)
+        REFERENCES users(userid)
+        ON DELETE CASCADE
+);
+
+-- =========================================================
+-- ATTENDANCE
+-- =========================================================
+
+CREATE TABLE attendance (
+    attendance_id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT,
+    course_id INT,
+    date DATE,
+    status ENUM('Present','Absent','Leave'),
+
+    FOREIGN KEY (student_id)
+        REFERENCES users(userid),
+
+    FOREIGN KEY (course_id)
+        REFERENCES courses(course_id)
+);
+
+-- =========================================================
+-- MESSAGES
+-- =========================================================
+
+CREATE TABLE messages (
+    message_id INT AUTO_INCREMENT PRIMARY KEY,
+    sender_id INT,
+    receiver_id INT,
+    message_text TEXT,
+    sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (sender_id)
+        REFERENCES users(userid),
+
+    FOREIGN KEY (receiver_id)
+        REFERENCES users(userid)
+);
+
+-- =========================================================
+-- ASSIGNMENTS
+-- =========================================================
+
+CREATE TABLE assignments (
+    assignment_id INT AUTO_INCREMENT PRIMARY KEY,
+    course_id INT,
+    title VARCHAR(255),
+    description TEXT,
+    due_date DATE,
+    created_by INT,
+
+    FOREIGN KEY (course_id)
+        REFERENCES courses(course_id),
+
+    FOREIGN KEY (created_by)
+        REFERENCES users(userid)
+);
+
+-- =========================================================
+-- SUBMISSIONS
+-- =========================================================
+
+CREATE TABLE submissions (
+    submission_id INT AUTO_INCREMENT PRIMARY KEY,
+    assignment_id INT,
+    student_id INT,
+    submission_date DATE,
+    grade VARCHAR(10),
+    file_link VARCHAR(255),
+
+    FOREIGN KEY (assignment_id)
+        REFERENCES assignments(assignment_id),
+
+    FOREIGN KEY (student_id)
+        REFERENCES users(userid)
+);
+
+-- =========================================================
+-- FEES
+-- =========================================================
+
+CREATE TABLE fees (
+    fee_id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT,
+    amount DECIMAL(10,2),
+    due_date DATE,
+    status ENUM('Paid','Pending'),
+
+    FOREIGN KEY (student_id)
+        REFERENCES users(userid)
+);
+
+-- =========================================================
+-- STUDENTS
+-- =========================================================
+
+CREATE TABLE students (
+    student_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT UNIQUE,
+    email VARCHAR(100),
+    phone VARCHAR(15),
+
+    FOREIGN KEY (user_id)
+        REFERENCES users(userid)
+);
+
+-- =========================================================
+-- TEACHERS
+-- =========================================================
+
+CREATE TABLE teachers (
+    teacher_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT UNIQUE,
+    email VARCHAR(100),
+    phone VARCHAR(15),
+
+    FOREIGN KEY (user_id)
+        REFERENCES users(userid)
+);
+
+-- =========================================================
+-- END OF FILE
+-- =========================================================

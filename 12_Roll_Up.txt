@@ -1,0 +1,64 @@
+-- =========================================================
+-- PU CONNECT - DBMS PROJECT
+-- File: 12_Rollup.sql
+-- Description: ROLLUP Operations
+-- Author: Bhavya
+-- =========================================================
+
+USE pu_connect;
+
+-- =========================================================
+-- 1. Total Marks per Student per Course with ROLLUP
+-- =========================================================
+
+SELECT
+    course_id,
+    student_id,
+    SUM(marks_obtained) AS total_marks
+FROM results
+GROUP BY course_id, student_id WITH ROLLUP;
+
+-- =========================================================
+-- 2. Total Courses Offered per Semester
+-- =========================================================
+
+SELECT
+    semester,
+    COUNT(*) AS total_courses
+FROM courses
+GROUP BY semester WITH ROLLUP;
+
+-- =========================================================
+-- 3. Attendance Count by Course and Status
+-- =========================================================
+
+SELECT
+    course_id,
+    status,
+    COUNT(*) AS attendance_count
+FROM attendance
+GROUP BY course_id, status WITH ROLLUP;
+
+-- =========================================================
+-- 4. Total Fees Collected by Payment Status
+-- =========================================================
+
+SELECT
+    status,
+    SUM(amount) AS total_amount
+FROM fees
+GROUP BY status WITH ROLLUP;
+
+-- =========================================================
+-- 5. Total Club Members by Club
+-- =========================================================
+
+SELECT
+    club_id,
+    COUNT(user_id) AS total_members
+FROM clubs_users
+GROUP BY club_id WITH ROLLUP;
+
+-- =========================================================
+-- END OF FILE
+-- =========================================================

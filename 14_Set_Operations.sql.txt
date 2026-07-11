@@ -1,0 +1,98 @@
+-- =========================================================
+-- PU CONNECT - DBMS PROJECT
+-- File: 14_Set_Operations.sql
+-- Description: SQL Set Operations
+-- Author: Bhavya
+-- =========================================================
+
+USE pu_connect;
+
+-- =========================================================
+-- 1. UNION
+-- Display all students and teachers together
+-- =========================================================
+
+SELECT
+    name,
+    email
+FROM students
+
+UNION
+
+SELECT
+    name,
+    email
+FROM teachers;
+
+-- =========================================================
+-- 2. UNION ALL
+-- Display all club members and club heads
+-- =========================================================
+
+SELECT
+    user_id AS member_id
+FROM clubs_users
+
+UNION ALL
+
+SELECT
+    head_of_teams
+FROM clubs;
+
+-- =========================================================
+-- 3. INTERSECTION
+-- Users who have both normal posts and club posts
+-- =========================================================
+
+SELECT
+    u.userid,
+    u.name
+FROM users u
+WHERE u.userid IN
+(
+    SELECT user_id
+    FROM posts
+)
+AND u.userid IN
+(
+    SELECT posted_by
+    FROM club_posts
+);
+
+-- =========================================================
+-- 4. MINUS (Using NOT IN)
+-- Users who created posts but never created club posts
+-- =========================================================
+
+SELECT
+    u.userid,
+    u.name
+FROM users u
+WHERE u.userid IN
+(
+    SELECT user_id
+    FROM posts
+)
+AND u.userid NOT IN
+(
+    SELECT posted_by
+    FROM club_posts
+);
+
+-- =========================================================
+-- 5. Users Who Have Never Created Any Post
+-- =========================================================
+
+SELECT
+    userid,
+    name
+FROM users
+WHERE userid NOT IN
+(
+    SELECT user_id
+    FROM posts
+);
+
+-- =========================================================
+-- END OF FILE
+-- =========================================================

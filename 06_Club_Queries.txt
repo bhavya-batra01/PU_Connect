@@ -1,0 +1,95 @@
+-- =========================================================
+-- PU CONNECT - DBMS PROJECT
+-- File: 06_Club_Queries.sql
+-- Description: Club Management Queries
+-- Author: Bhavya
+-- =========================================================
+
+USE pu_connect;
+
+-- =========================================================
+-- 1. Display all users with their role in each club
+-- =========================================================
+
+SELECT
+    u.userid,
+    u.name,
+    c.club_name,
+    cu.role_in_club,
+    cu.joined_at
+FROM clubs_users cu
+JOIN users u
+    ON cu.user_id = u.userid
+JOIN clubs c
+    ON cu.club_id = c.club_id
+ORDER BY c.club_name, u.name;
+
+-- =========================================================
+-- 2. Count the total number of members in each club
+-- =========================================================
+
+SELECT
+    c.club_name,
+    COUNT(cu.user_id) AS total_members
+FROM clubs_users cu
+JOIN clubs c
+    ON cu.club_id = c.club_id
+GROUP BY c.club_name
+ORDER BY total_members DESC;
+
+-- =========================================================
+-- 3. Display all clubs joined by a specific student
+-- Example: Student with User ID = 5
+-- =========================================================
+
+SELECT
+    u.name,
+    c.club_name,
+    cu.role_in_club,
+    cu.joined_at
+FROM clubs_users cu
+JOIN users u
+    ON cu.user_id = u.userid
+JOIN clubs c
+    ON cu.club_id = c.club_id
+WHERE cu.user_id = 5;
+
+-- =========================================================
+-- 4. Display all coordinators of clubs
+-- =========================================================
+
+SELECT
+    u.name,
+    c.club_name
+FROM clubs_users cu
+JOIN users u
+    ON cu.user_id = u.userid
+JOIN clubs c
+    ON cu.club_id = c.club_id
+WHERE cu.role_in_club = 'coordinator';
+
+-- =========================================================
+-- 5. Display all Head of Teams
+-- =========================================================
+
+SELECT
+    u.name,
+    c.club_name
+FROM clubs c
+JOIN users u
+    ON c.head_of_teams = u.userid;
+
+-- =========================================================
+-- 6. Display Faculty Incharge of each club
+-- =========================================================
+
+SELECT
+    c.club_name,
+    u.name AS faculty_incharge
+FROM clubs c
+JOIN users u
+    ON c.faculty_incharge = u.userid;
+
+-- =========================================================
+-- END OF FILE
+-- =========================================================

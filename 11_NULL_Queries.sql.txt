@@ -1,0 +1,57 @@
+-- =========================================================
+-- PU CONNECT - DBMS PROJECT
+-- File: 11_NULL_Queries.sql
+-- Description: NULL Value Handling Queries
+-- Author: Bhavya
+-- =========================================================
+
+USE pu_connect;
+
+-- =========================================================
+-- 1. Find students with NULL email addresses
+-- =========================================================
+
+SELECT *
+FROM students
+WHERE email IS NULL;
+
+-- =========================================================
+-- 2. Find students whose phone number is NOT NULL
+-- =========================================================
+
+SELECT *
+FROM students
+WHERE phone IS NOT NULL;
+
+-- =========================================================
+-- 3. Replace NULL email values using COALESCE()
+-- =========================================================
+
+SELECT
+    student_id,
+    COALESCE(email, 'No Email Provided') AS email_info
+FROM students;
+
+-- =========================================================
+-- 4. Display users with missing phone numbers
+-- =========================================================
+
+SELECT
+    userid,
+    name,
+    phone
+FROM users
+WHERE phone IS NULL;
+
+-- =========================================================
+-- 5. Display club descriptions, replacing NULL values
+-- =========================================================
+
+SELECT
+    club_name,
+    COALESCE(description, 'No Description Available') AS description
+FROM clubs;
+
+-- =========================================================
+-- END OF FILE
+-- =========================================================

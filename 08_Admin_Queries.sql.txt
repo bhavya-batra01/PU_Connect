@@ -1,0 +1,95 @@
+-- =========================================================
+-- PU CONNECT - DBMS PROJECT
+-- File: 08_Admin_Queries.sql
+-- Description: Administrative SQL Queries
+-- Author: Bhavya
+-- =========================================================
+
+USE pu_connect;
+
+-- =========================================================
+-- 1. Update a user's phone number
+-- =========================================================
+
+UPDATE users
+SET phone = '9998887777'
+WHERE userid = 10;
+
+-- Verify the update
+SELECT userid, name, phone
+FROM users
+WHERE userid = 10;
+
+-- =========================================================
+-- 2. Change the Head of Teams for a club
+-- =========================================================
+
+UPDATE clubs
+SET head_of_teams = 8
+WHERE club_id = 2;
+
+-- Verify the update
+SELECT
+    club_id,
+    club_name,
+    head_of_teams
+FROM clubs
+WHERE club_id = 2;
+
+-- =========================================================
+-- 3. Delete a specific post
+-- =========================================================
+
+DELETE FROM posts
+WHERE post_id = 15;
+
+-- Verify deletion
+SELECT *
+FROM posts
+WHERE post_id = 15;
+
+-- =========================================================
+-- 4. Remove a user from a club
+-- =========================================================
+
+DELETE FROM clubs_users
+WHERE user_id = 5
+  AND club_id = 3;
+
+-- Verify deletion
+SELECT *
+FROM clubs_users
+WHERE user_id = 5
+  AND club_id = 3;
+
+-- =========================================================
+-- 5. Update a student's department
+-- =========================================================
+
+UPDATE users
+SET department = 'Computer Science'
+WHERE userid = 1;
+
+-- =========================================================
+-- 6. Update fee status
+-- =========================================================
+
+UPDATE fees
+SET status = 'Paid'
+WHERE student_id = 2;
+
+-- =========================================================
+-- 7. Display all pending fees
+-- =========================================================
+
+SELECT
+    student_id,
+    amount,
+    due_date,
+    status
+FROM fees
+WHERE status = 'Pending';
+
+-- =========================================================
+-- END OF FILE
+-- =========================================================

@@ -1,0 +1,103 @@
+-- =========================================================
+-- PU CONNECT - DBMS PROJECT
+-- File: 13_Views.sql
+-- Description: SQL Views
+-- Author: Bhavya
+-- =========================================================
+
+USE pu_connect;
+
+-- =========================================================
+-- 1. Student Marks Summary View
+-- =========================================================
+
+CREATE OR REPLACE VIEW student_marks_summary AS
+SELECT
+    student_id,
+    course_id,
+    SUM(marks_obtained) AS total_marks
+FROM results
+GROUP BY student_id, course_id;
+
+-- View Data
+SELECT * FROM student_marks_summary;
+
+-- =========================================================
+-- 2. Club Members View
+-- =========================================================
+
+CREATE OR REPLACE VIEW club_members_view AS
+SELECT
+    u.userid,
+    u.name,
+    c.club_name,
+    cu.role_in_club
+FROM clubs_users cu
+JOIN users u
+    ON cu.user_id = u.userid
+JOIN clubs c
+    ON cu.club_id = c.club_id;
+
+-- View Data
+SELECT * FROM club_members_view;
+
+-- =========================================================
+-- 3. Course Results View
+-- =========================================================
+
+CREATE OR REPLACE VIEW course_results_view AS
+SELECT
+    u.name AS student_name,
+    c.course_name,
+    r.marks_obtained,
+    r.grade
+FROM results r
+JOIN users u
+    ON r.student_id = u.userid
+JOIN courses c
+    ON r.course_id = c.course_id;
+
+-- View Data
+SELECT * FROM course_results_view;
+
+-- =========================================================
+-- 4. Attendance Summary View
+-- =========================================================
+
+CREATE OR REPLACE VIEW attendance_summary_view AS
+SELECT
+    u.name AS student_name,
+    c.course_name,
+    a.date,
+    a.status
+FROM attendance a
+JOIN users u
+    ON a.student_id = u.userid
+JOIN courses c
+    ON a.course_id = c.course_id;
+
+-- View Data
+SELECT * FROM attendance_summary_view;
+
+-- =========================================================
+-- 5. Club Posts View
+-- =========================================================
+
+CREATE OR REPLACE VIEW club_posts_view AS
+SELECT
+    c.club_name,
+    u.name AS posted_by,
+    cp.content,
+    cp.post_date
+FROM club_posts cp
+JOIN clubs c
+    ON cp.club_id = c.club_id
+JOIN users u
+    ON cp.posted_by = u.userid;
+
+-- View Data
+SELECT * FROM club_posts_view;
+
+-- =========================================================
+-- END OF FILE
+-- =========================================================

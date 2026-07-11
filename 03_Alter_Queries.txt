@@ -1,0 +1,32 @@
+-- =========================================================
+-- PU CONNECT - DBMS PROJECT
+-- File: 03_Alter_Queries.sql
+-- Description: ALTER TABLE queries
+-- Author: Bhavya
+-- =========================================================
+
+USE pu_connect;
+
+-- =========================================================
+-- ADD PRIMARY KEY COLUMN TO TEACHERS TABLE
+-- =========================================================
+
+ALTER TABLE teachers
+ADD COLUMN teacher_id INT AUTO_INCREMENT PRIMARY KEY;
+
+-- Verify the changes
+SELECT * FROM teachers;
+
+-- =========================================================
+-- ADD PRIMARY KEY COLUMN TO STUDENTS TABLE
+-- =========================================================
+
+ALTER TABLE students
+ADD COLUMN student_id INT AUTO_INCREMENT PRIMARY KEY;
+
+-- Verify the changes
+SELECT * FROM students;
+
+-- =========================================================
+-- END OF FILE
+-- =========================================================

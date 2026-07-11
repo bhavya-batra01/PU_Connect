@@ -1,0 +1,81 @@
+-- =========================================================
+-- PU CONNECT - DBMS PROJECT
+-- File: 15_Transactions.sql
+-- Description: Transactions, Commit, Rollback & User Privileges
+-- Author: Bhavya
+-- =========================================================
+
+USE pu_connect;
+
+-- =========================================================
+-- 1. Transaction using COMMIT
+-- =========================================================
+
+START TRANSACTION;
+
+UPDATE fees
+SET status = 'Paid'
+WHERE student_id = 2;
+
+INSERT INTO fees (student_id, amount)
+VALUES (2, 50000);
+
+COMMIT;
+
+-- =========================================================
+-- 2. Transaction using ROLLBACK
+-- =========================================================
+
+START TRANSACTION;
+
+UPDATE fees
+SET amount = amount + 1000
+WHERE student_id = 3;
+
+-- Undo the above update
+ROLLBACK;
+
+-- =========================================================
+-- 3. Create Database User
+-- =========================================================
+
+CREATE USER IF NOT EXISTS 'report_user'@'localhost'
+IDENTIFIED BY 'pass123';
+
+-- =========================================================
+-- 4. Grant Privileges
+-- =========================================================
+
+CREATE USER IF NOT EXISTS 'demo_user'@'%'
+IDENTIFIED BY 'pass123';
+
+GRANT ALL PRIVILEGES
+ON pu_connect.*
+TO 'demo_user'@'%';
+
+FLUSH PRIVILEGES;
+
+-- =========================================================
+-- 5. Revoke Privileges
+-- =========================================================
+
+REVOKE ALL PRIVILEGES,
+GRANT OPTION
+FROM 'demo_user'@'%';
+
+FLUSH PRIVILEGES;
+
+-- =========================================================
+-- 6. Attendance Summary using ROLLUP
+-- =========================================================
+
+SELECT
+    course_id,
+    status,
+    COUNT(*) AS total_count
+FROM attendance
+GROUP BY course_id, status WITH ROLLUP;
+
+-- =========================================================
+-- END OF FILE
+-- =========================================================

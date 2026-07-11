@@ -1,0 +1,57 @@
+-- =========================================================
+-- PU CONNECT - DBMS PROJECT
+-- File: 05_Relationship_Queries.sql
+-- Description: Relationship-Based Queries (JOIN Operations)
+-- Author: Bhavya
+-- =========================================================
+
+USE pu_connect;
+
+-- =========================================================
+-- 1. Display all posts with the name of the user who posted them
+-- =========================================================
+
+SELECT
+    p.post_id,
+    u.name AS user_name,
+    p.content,
+    p.post_date
+FROM posts p
+JOIN users u
+    ON p.user_id = u.userid
+ORDER BY p.post_date DESC;
+
+-- =========================================================
+-- 2. Display all clubs with Faculty Incharge and Head of Teams
+-- =========================================================
+
+SELECT
+    c.club_name,
+    fi.name AS faculty_incharge,
+    ht.name AS head_of_teams
+FROM clubs c
+JOIN users fi
+    ON c.faculty_incharge = fi.userid
+JOIN users ht
+    ON c.head_of_teams = ht.userid;
+
+-- =========================================================
+-- 3. Display all club posts with club name and user name
+-- =========================================================
+
+SELECT
+    cp.post_id,
+    c.club_name,
+    u.name AS posted_by,
+    cp.content,
+    cp.post_date
+FROM club_posts cp
+JOIN clubs c
+    ON cp.club_id = c.club_id
+JOIN users u
+    ON cp.posted_by = u.userid
+ORDER BY cp.post_date DESC;
+
+-- =========================================================
+-- END OF FILE
+-- =========================================================

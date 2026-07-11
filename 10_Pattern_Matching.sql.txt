@@ -1,0 +1,71 @@
+-- =========================================================
+-- PU CONNECT - DBMS PROJECT
+-- File: 10_Pattern_Matching.sql
+-- Description: Pattern Matching Queries using LIKE Operator
+-- Author: Bhavya
+-- =========================================================
+
+USE pu_connect;
+
+-- =========================================================
+-- 1. Find users whose names start with 'A'
+-- =========================================================
+
+SELECT *
+FROM users
+WHERE name LIKE 'A%';
+
+-- =========================================================
+-- 2. Find users whose names end with 'a'
+-- =========================================================
+
+SELECT *
+FROM users
+WHERE name LIKE '%a';
+
+-- =========================================================
+-- 3. Find users whose names contain 'ya'
+-- =========================================================
+
+SELECT *
+FROM users
+WHERE name LIKE '%ya%';
+
+-- =========================================================
+-- 4. Find users whose email belongs to puconnect.edu
+-- =========================================================
+
+SELECT
+    userid,
+    name,
+    email
+FROM users
+WHERE email LIKE '%@puconnect.edu';
+
+-- =========================================================
+-- 5. Find all club names containing the word 'Club'
+-- =========================================================
+
+SELECT *
+FROM clubs
+WHERE club_name LIKE '%Club%';
+
+-- =========================================================
+-- 6. Find all course names starting with 'C'
+-- =========================================================
+
+SELECT *
+FROM courses
+WHERE course_name LIKE 'C%';
+
+-- =========================================================
+-- 7. Find events containing the word 'Hack'
+-- =========================================================
+
+SELECT *
+FROM events
+WHERE event_name LIKE '%Hack%';
+
+-- =========================================================
+-- END OF FILE
+-- =========================================================

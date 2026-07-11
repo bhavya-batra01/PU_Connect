@@ -1,0 +1,76 @@
+-- =========================================================
+-- PU CONNECT - DBMS PROJECT
+-- File: 07_Course_Queries.sql
+-- Description: Course Management Queries
+-- Author: Bhavya
+-- =========================================================
+
+USE pu_connect;
+
+-- =========================================================
+-- 1. Display all courses
+-- =========================================================
+
+SELECT *
+FROM courses;
+
+-- =========================================================
+-- 2. Display courses having 4 or more credits
+-- =========================================================
+
+SELECT
+    course_name,
+    credits
+FROM courses
+WHERE credits >= 4;
+
+-- =========================================================
+-- 3. Count the number of courses offered in each semester
+-- =========================================================
+
+SELECT
+    semester,
+    COUNT(*) AS total_courses
+FROM courses
+GROUP BY semester
+ORDER BY semester;
+
+-- =========================================================
+-- 4. Display courses in ascending order of semester
+-- =========================================================
+
+SELECT
+    course_id,
+    course_name,
+    semester,
+    credits,
+    subject_name
+FROM courses
+ORDER BY semester;
+
+-- =========================================================
+-- 5. Display all courses with more than 3 credits
+-- =========================================================
+
+SELECT
+    course_name,
+    subject_name,
+    credits
+FROM courses
+WHERE credits > 3
+ORDER BY credits DESC;
+
+-- =========================================================
+-- 6. Display total credits offered in each semester
+-- =========================================================
+
+SELECT
+    semester,
+    SUM(credits) AS total_credits
+FROM courses
+GROUP BY semester
+ORDER BY semester;
+
+-- =========================================================
+-- END OF FILE
+-- =========================================================
